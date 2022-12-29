@@ -1,0 +1,99 @@
+import java.util.*;
+import java.io.*;
+
+class Node implements Comparator<Node> {
+    int node;
+    int distance;
+
+    public Node(int n, int d) {
+        node = n;
+        distance = d;
+    }
+
+    public Node() {
+    }
+
+    public int compare(Node n1, Node n2) {
+      if (n1.distance < n2.distance){
+        return -1;
+      }
+      else if (n1.distance > n2.distance){
+        return 1;
+      }
+        return 0;
+    }
+}
+
+
+public class Dijkstra {
+    int vertices;
+    int AdjMatrix[][];
+    int distance[];
+    int parent[];
+    String color[];
+    PriorityQueue<Node> queue;
+
+    public Dijkstra(int v, int g[][], String c[]) {
+        vertices = v;
+        AdjMatrix = g;
+        color=c;
+        distance = new int[vertices];
+        parent = new int[vertices];
+        for (int i = 0; i < vertices ; i++) {
+            distance[i] = 9999999;
+            parent[i] = 0;
+        }
+        queue = new PriorityQueue<Node>(vertices, new Node());
+    }
+    
+    public Dijkstra(int v, int g[][]) {
+        vertices = v;
+        AdjMatrix = g;
+        distance = new int[vertices];
+        parent = new int[vertices];
+        for (int i = 0; i < vertices; i++) {
+            distance[i] = 9999999;
+            parent[i] = 0;
+        }
+        queue = new PriorityQueue<Node>(vertices, new Node());
+    }
+    
+    public Dijkstra(){
+      
+    }
+
+    public int dijkstra(int s, int d) {
+        distance[s] = 0;
+        queue.add(new Node(s, distance[s]));
+        while (queue.isEmpty() != true) {
+            int u = queue.remove().node;
+            for (int v = 0; v < vertices ; v++) {
+                if (AdjMatrix[u][v] > 0 && distance[v] > AdjMatrix[u][v] + distance[u]) {
+                    distance[v] = AdjMatrix[u][v] + distance[u];
+                    parent[v] = u;
+                    queue.add(new Node(v, distance[v]));
+                }
+            }
+        }
+        return distance[d];
+    }
+    
+
+    public void djkPath(int s, int d) {
+        distance[s] = 0;
+        queue.add(new Node(s, distance[s]));
+        while (queue.isEmpty() != true) {
+            int u = queue.remove().node;
+            if (color[u] == "Yellow") {
+            }else{
+                for (int v = 0; v < vertices; v++) {
+                    if (AdjMatrix[u][v] > 0 && distance[v] > AdjMatrix[u][v] + distance[u]) {
+                        distance[v] = AdjMatrix[u][v] + distance[u];
+                        parent[v] = u;
+                        queue.add(new Node(v, distance[v]));
+                    }
+                }
+            }
+        }
+    }
+}

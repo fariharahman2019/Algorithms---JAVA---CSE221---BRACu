@@ -1,0 +1,8 @@
+15
+6
+Chelsea 8 9.6 Premierleague
+InterMilan 7 9.4 Champion’sLeague
+Individual 5 8.3 CoachoftheYear
+RealMadrid 5 8.7 LigaBBVA
+Porto 4 8.5 Champion’sLeague
+MansisterUnited 6 8.9 EuropaLeague

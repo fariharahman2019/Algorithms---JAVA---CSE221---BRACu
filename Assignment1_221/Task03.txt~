@@ -1,0 +1,135 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Array;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+public class Task03
+{
+        static int v;
+        static int graph[][];
+        static LinkedList[] a1;
+        static int StartK1=0;
+        static int end=0;
+        static int[] a;
+        static int playercount=0;
+        static int StartK2=0;
+        static int StartK3=0;
+        static int StartK4=0;
+        static int StartK5=0;
+        public static void main(String[] args)
+        {
+            GraphInput();
+            Arrays.sort(a);
+            int start=a[a.length-1];
+            int calling[]=bfs(graph,start,end);
+        }
+        public static void GraphInput()
+        {
+            try
+            {
+                String str;
+                FileReader fr = new FileReader("L:\\input03.txt");
+                BufferedReader obj = new BufferedReader(fr);
+                str = obj.readLine();
+                //v=node
+                v = Integer.parseInt(str);
+                graph = new int[v][v];
+                str = obj.readLine();
+                int edge_number = Integer.parseInt(str);
+                for (int i=0;i<edge_number;i++)
+                {
+                    str=obj.readLine();
+                    StringTokenizer st = new StringTokenizer(str, " ");
+                    int token1 = Integer.parseInt(st.nextToken());
+                    int token2 = Integer.parseInt(st.nextToken());
+                    graph[token1][token2] = 1;
+                }
+                String start = obj.readLine();
+                end = Integer.parseInt(start);
+                String start0=obj.readLine();
+                playercount=Integer.parseInt(start0);
+                a=new int[playercount];
+                for (int i=0;i<playercount;i++)
+                {
+                    String start1=obj.readLine();
+                    a[i]=Integer.parseInt(start1);
+                }
+            }
+            catch (IOException e)
+            {
+                System.out.println("Vul Hoise");
+            }
+
+        }
+        public static int[] bfs (int [][] a,int start,int end)
+        {
+            //White=W;
+            //Gray=G;
+            //Black=B;
+            String color[]=new String[v+1];
+            int p[]=new int[v+1];//p means parent
+            int d[]=new int[v+1];//d means distance
+            Queue<Integer> q=new LinkedList<>();
+            for (int i=0;i<v;i++)
+            {
+                color[i]="W";
+                d[i]=Integer.MAX_VALUE;//infinity
+                p[i]=Integer.MIN_VALUE;//null
+            }
+            color[start]="G";
+            d[start]=0;
+            p[start]=Integer.MIN_VALUE;
+            q.add(start);//works as enqueue
+            while (!q.isEmpty())
+            {
+                int x=q.poll();//works as dequeue
+                for (int i=0; i<v; i++)
+                {
+                    if((color[i].equals("W")) && (graph[x][i]==1))
+                    {
+                        color[i]="G";
+                        d[i]=d[x]+1;
+                        p[i]=x;
+                        q.add(i);
+                    }
+                }
+                color[x]="B";
+            }
+            int x[]= printBfs(d,p,end);
+            return x;
+        }
+        public static int[] printBfs(int [] distance,int [] parent,int end)
+        {
+            int k[]=new int[v];
+            for (int i=0;i<v;i++)
+            {
+                String s=null;
+                if(i==end)
+                {
+                    //System.out.println("The destination is "+ i + " and distance from source is -" + distance[i] + ",path is ->" + printDirection(parent, i));
+                    System.out.println(distance[i]);
+                    k[i] = distance[i];
+                }
+            }
+            return k;
+        }
+        public static String printDirection(int []p,int i)
+        {
+            String s="";
+            int t=i;
+            while (p[i]!=Integer.MIN_VALUE)
+            {
+                String s1=String.valueOf(p[i]);
+                s=s1 + ", " +s;
+                i=p[i];
+            }
+            s=s+t;
+            return s;
+        }
+    }
+
+
